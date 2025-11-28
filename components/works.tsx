@@ -7,22 +7,25 @@ import { motion, useMotionValue, useSpring } from "framer-motion"
 
 const projects = [
   {
-    title: "Neural Interface",
-    tags: ["Next.js", "OpenAI", "WebGL"],
+    title: "Oracle Gaming",
+    tags: ["React", "Woocommerce", "Tailwind"],
     image: "/abstract-neural-network-visualization-dark-theme.jpg",
-    year: "2024",
+    year: "2025",
+    url: "https://www.oraclegaming.co.za/",
   },
   {
-    title: "Quantum Dashboard",
-    tags: ["React", "D3.js", "Python"],
+    title: "Invictus Nutrition",
+    tags: ["React", "Woocommerce", "Tailwind"],
     image: "/futuristic-data-dashboard-dark-minimal.jpg",
-    year: "2024",
+    year: "2025",
+    url: "https://www.invictusnutrition.co.za/",
   },
   {
-    title: "Synthetic Memory",
-    tags: ["TypeScript", "LangChain", "Vector DB"],
+    title: "Radiant Life Aesthetics",
+    tags: ["React", "Typescript", "Tailwind"],
     image: "/abstract-memory-storage-visualization.jpg",
-    year: "2023",
+    year: "2025",
+    url: "https://www.radiantlifeaesthetics.co.za/",
   },
   {
     title: "Echo Protocol",
@@ -61,7 +64,7 @@ export function Works() {
         className="mb-24"
       >
         <p className="font-mono text-xs tracking-[0.3em] text-muted-foreground mb-4">04 — SELECTED WORKS</p>
-        <h2 className="font-sans text-3xl md:text-5xl font-light italic">The Distortion Gallery</h2>
+        <h2 className="font-sans text-3xl md:text-5xl font-light italic">The Gallery</h2>
       </motion.div>
 
       {/* Projects List */}
@@ -113,37 +116,56 @@ export function Works() {
           </motion.div>
         ))}
 
-        {/* Floating Image */}
-        <motion.div
-          className="absolute pointer-events-none z-50 w-64 h-40 md:w-80 md:h-48 overflow-hidden rounded-lg"
-          style={{
-            x: springX,
-            y: springY,
-            translateX: "-50%",
-            translateY: "-320%",
-          }}
-          animate={{
-            opacity: hoveredIndex !== null ? 1 : 0,
-            scale: hoveredIndex !== null ? 1 : 0.8,
-          }}
-          transition={{ duration: 0.2 }}
-        >
-          {hoveredIndex !== null && (
-            <motion.img
-              src={projects[hoveredIndex].image}
-              alt={projects[hoveredIndex].title}
-              className="w-full h-full object-cover"
-              initial={{ scale: 1.2 }}
-              animate={{ scale: 1 }}
-              transition={{ duration: 0.4 }}
-              style={{
-                filter: "grayscale(50%) contrast(1.1)",
-              }}
-            />
-          )}
-          {/* Glitch overlay */}
-          <div className="absolute inset-0 bg-[#2563eb]/10 mix-blend-overlay" />
-        </motion.div>
+        {/* Floating Preview (Website or Image) */}
+        {hoveredIndex !== null && (
+          <motion.div
+            className="absolute pointer-events-none z-50 overflow-hidden rounded-lg border border-white/20 shadow-2xl bg-black"
+            style={{
+              x: springX,
+              y: springY,
+              translateX: "-50%",
+              translateY: "-320%",
+            }}
+            animate={{
+              opacity: 1,
+              scale: 1,
+              width: projects[hoveredIndex].url ? "512px" : "256px",
+              height: projects[hoveredIndex].url ? "320px" : "160px",
+            }}
+            initial={{
+              opacity: 0,
+              scale: 0.8,
+              width: projects[hoveredIndex].url ? "512px" : "256px",
+              height: projects[hoveredIndex].url ? "320px" : "160px",
+            }}
+            transition={{ duration: 0.2 }}
+          >
+            {projects[hoveredIndex].url ? (
+              <div className="relative w-full h-full" style={{ transform: "scale(0.4)", transformOrigin: "top left", width: "250%", height: "250%" }}>
+                <iframe
+                  src={projects[hoveredIndex].url}
+                  className="absolute top-0 left-0 w-full h-full border-0"
+                  style={{ width: "1280px", height: "800px" }}
+                  loading="lazy"
+                />
+              </div>
+            ) : (
+              <motion.img
+                src={projects[hoveredIndex].image}
+                alt={projects[hoveredIndex].title}
+                className="w-full h-full object-cover"
+                initial={{ scale: 1.2 }}
+                animate={{ scale: 1 }}
+                transition={{ duration: 0.4 }}
+                style={{
+                  filter: "grayscale(50%) contrast(1.1)",
+                }}
+              />
+            )}
+            {/* Glitch overlay */}
+            <div className="absolute inset-0 bg-[#2563eb]/10 mix-blend-overlay pointer-events-none" />
+          </motion.div>
+        )}
       </div>
 
       {/* Bottom Border */}

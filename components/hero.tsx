@@ -31,9 +31,9 @@ export function Hero() {
         >
           <p className="font-mono text-xs tracking-[0.3em] text-muted-foreground mb-2">01 — DISCIPLINE</p>
           <h2 className="font-sans text-4xl md:text-6xl lg:text-7xl font-light tracking-tight text-balance">
-            SYSTEM
+            COMPUTER
             <br />
-            <span className="italic">ARCHITECT</span>
+            <span className="italic">SCIENCE</span>
           </h2>
         </motion.div>
 
@@ -64,9 +64,9 @@ export function Hero() {
         >
           <p className="font-mono text-xs tracking-[0.3em] text-muted-foreground mb-2">02 — CRAFT</p>
           <h2 className="font-sans text-4xl md:text-6xl lg:text-7xl font-light tracking-tight text-balance">
-            INTERFACE
+            FULL STACK
             <br />
-            <span className="italic">DESIGNER</span>
+            <span className="italic">ENGINEER</span>
           </h2>
         </motion.div>
       </motion.div>
