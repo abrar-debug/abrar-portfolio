@@ -2,8 +2,8 @@
 
 import type React from "react"
 
-import { useState, useRef } from "react"
-import { motion, useMotionValue, useSpring } from "framer-motion"
+import { useState } from "react"
+import { motion } from "framer-motion"
 
 const projects = [
   {
@@ -27,31 +27,11 @@ const projects = [
     year: "2025",
     url: "https://www.radiantlifeaesthetics.co.za/",
   },
-  {
-    title: "Echo Protocol",
-    tags: ["Rust", "WebAssembly", "Audio"],
-    image: "/sound-wave-visualization-dark-theme.jpg",
-    year: "2023",
-  },
+  
 ]
 
 export function Works() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
-  const containerRef = useRef<HTMLDivElement>(null)
-
-  const mouseX = useMotionValue(0)
-  const mouseY = useMotionValue(0)
-
-  const springX = useSpring(mouseX, { stiffness: 150, damping: 20 })
-  const springY = useSpring(mouseY, { stiffness: 150, damping: 20 })
-
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (containerRef.current) {
-      const rect = containerRef.current.getBoundingClientRect()
-      mouseX.set(e.clientX - rect.left)
-      mouseY.set(e.clientY - rect.top)
-    }
-  }
 
   return (
     <section className="relative py-32 px-8 md:px-12 md:py-24">
@@ -68,7 +48,7 @@ export function Works() {
       </motion.div>
 
       {/* Projects List */}
-      <div ref={containerRef} onMouseMove={handleMouseMove} className="relative">
+      <div className="relative">
         {projects.map((project, index) => (
           <motion.div
             key={project.title}
@@ -89,6 +69,48 @@ export function Works() {
               <span className="font-mono text-xs text-muted-foreground tracking-widest order-1 md:order-none">
                 {project.year}
               </span>
+
+              {/* Preview (Website or Image) - appears between year and title */}
+              <motion.div
+                className="pointer-events-none z-50 overflow-hidden rounded-lg border border-white/20 shadow-2xl bg-black flex-shrink-0"
+                initial={{ opacity: 0, scale: 0.8, width: 0, marginLeft: 0, marginRight: 0 }}
+                animate={{
+                  opacity: hoveredIndex === index ? 1 : 0,
+                  scale: hoveredIndex === index ? 1 : 0.8,
+                  width: hoveredIndex === index ? (project.url ? "512px" : "256px") : "0px",
+                  height: hoveredIndex === index ? (project.url ? "320px" : "160px") : "0px",
+                  marginLeft: hoveredIndex === index ? "16px" : "0px",
+                  marginRight: hoveredIndex === index ? "16px" : "0px",
+                }}
+                transition={{ duration: 0.4 }}
+              >
+                {hoveredIndex === index && (
+                  <>
+                    {project.url ? (
+                      <div className="relative w-full h-full" style={{ transform: "scale(0.4)", transformOrigin: "top left", width: "250%", height: "250%" }}>
+                        <iframe
+                          src={project.url}
+                          className="absolute top-0 left-0 w-full h-full border-0"
+                          style={{ width: "1280px", height: "800px" }}
+                          loading="lazy"
+                        />
+                      </div>
+                    ) : (
+                      <motion.img
+                        src={project.image}
+                        alt={project.title}
+                        className="w-full h-full object-cover"
+                        initial={{ scale: 1.2 }}
+                        animate={{ scale: 1 }}
+                        transition={{ duration: 0.4 }}
+                        style={{
+                          filter: "grayscale(50%) contrast(1.1)",
+                        }}
+                      />
+                    )}
+                  </>
+                )}
+              </motion.div>
 
               {/* Title */}
               <motion.h3
@@ -115,57 +137,6 @@ export function Works() {
             </a>
           </motion.div>
         ))}
-
-        {/* Floating Preview (Website or Image) */}
-        {hoveredIndex !== null && (
-          <motion.div
-            className="absolute pointer-events-none z-50 overflow-hidden rounded-lg border border-white/20 shadow-2xl bg-black"
-            style={{
-              x: springX,
-              y: springY,
-              translateX: "-50%",
-              translateY: "-320%",
-            }}
-            animate={{
-              opacity: 1,
-              scale: 1,
-              width: projects[hoveredIndex].url ? "512px" : "256px",
-              height: projects[hoveredIndex].url ? "320px" : "160px",
-            }}
-            initial={{
-              opacity: 0,
-              scale: 0.8,
-              width: projects[hoveredIndex].url ? "512px" : "256px",
-              height: projects[hoveredIndex].url ? "320px" : "160px",
-            }}
-            transition={{ duration: 0.2 }}
-          >
-            {projects[hoveredIndex].url ? (
-              <div className="relative w-full h-full" style={{ transform: "scale(0.4)", transformOrigin: "top left", width: "250%", height: "250%" }}>
-                <iframe
-                  src={projects[hoveredIndex].url}
-                  className="absolute top-0 left-0 w-full h-full border-0"
-                  style={{ width: "1280px", height: "800px" }}
-                  loading="lazy"
-                />
-              </div>
-            ) : (
-              <motion.img
-                src={projects[hoveredIndex].image}
-                alt={projects[hoveredIndex].title}
-                className="w-full h-full object-cover"
-                initial={{ scale: 1.2 }}
-                animate={{ scale: 1 }}
-                transition={{ duration: 0.4 }}
-                style={{
-                  filter: "grayscale(50%) contrast(1.1)",
-                }}
-              />
-            )}
-            {/* Glitch overlay */}
-            <div className="absolute inset-0 bg-[#2563eb]/10 mix-blend-overlay pointer-events-none" />
-          </motion.div>
-        )}
       </div>
 
       {/* Bottom Border */}
