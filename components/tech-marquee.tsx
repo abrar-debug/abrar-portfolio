@@ -7,14 +7,14 @@ const techItems = [
   "REACT",
   "TYPESCRIPT",
   "PYTHON",
-  "PYTORCH",
-  "LATENCY",
-  "INTUITION",
-  "OPENAI",
-  "EMPATHY",
-  "WEBGL",
+  "GIT",
+  "JAVASCRIPT",
+  "WOOCOMMERCE",
+  "C#",
+  "SQL",
+  ".NET",
   "NODE.JS",
-  "PRECISION",
+  "TAILWIND",
 ]
 
 const concepts = [

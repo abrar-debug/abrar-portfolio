@@ -61,7 +61,9 @@ export function Works() {
             onMouseLeave={() => setHoveredIndex(null)}
           >
             <a
-              href="#"
+              href={project.url || "#"}
+              target={project.url ? "_blank" : undefined}
+              rel={project.url ? "noopener noreferrer" : undefined}
               data-cursor-hover
               className="group flex flex-col md:flex-row md:items-center justify-between gap-4"
             >
