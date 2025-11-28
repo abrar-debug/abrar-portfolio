@@ -18,18 +18,13 @@ const techItems = [
 ]
 
 const concepts = [
-  "ARCHITECTURE",
-  "SYSTEMS",
+  "FRONTEND",
+  "UI",
   "INTERFACES",
-  "ALGORITHMS",
-  "EMERGENCE",
-  "COGNITION",
-  "SYNTHESIS",
-  "VELOCITY",
-  "ENTROPY",
-  "FLUX",
-  "AXIOM",
-  "TENSOR",
+  "DESIGN",
+  "AGILE",
+  "SCRUM",
+  "CREATIVITY",
 ]
 
 function MarqueeRow({ items, direction = "left" }: { items: string[]; direction?: "left" | "right" }) {
