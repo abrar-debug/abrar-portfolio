@@ -5,36 +5,75 @@ import type React from "react"
 import { useState } from "react"
 import { motion } from "framer-motion"
 
-const projects = [
+export const projects = [
   {
     title: "Oracle Gaming",
-    tags: ["React", "Woocommerce", "Tailwind"],
+    client: "Oracle Gaming",
+    role: "Full‑stack engineer",
+    summary: "High‑performance gaming e‑commerce experience with custom theming, product flows, and checkout.",
+    tags: ["React", "Next.js", "WooCommerce", "Tailwind"],
     image: "/abstract-neural-network-visualization-dark-theme.jpg",
     year: "2025",
     url: "https://www.oraclegaming.co.za/",
   },
   {
     title: "Invictus Nutrition",
-    tags: ["React", "Woocommerce", "Tailwind"],
+    client: "Invictus Nutrition",
+    role: "Frontend engineer",
+    summary: "Supplement brand storefront focused on clarity, conversion, and mobile‑first shopping journeys.",
+    tags: ["React", "Next.js", "WooCommerce", "Tailwind"],
     image: "/futuristic-data-dashboard-dark-minimal.jpg",
     year: "2025",
     url: "https://www.invictusnutrition.co.za/",
   },
   {
     title: "Radiant Life Aesthetics",
-    tags: ["React", "Typescript", "Tailwind"],
+    client: "Radiant Life Aesthetics",
+    role: "Frontend engineer",
+    summary: "Aesthetic clinic website with emphasis on typography, trust, and a calm, premium brand presence.",
+    tags: ["React", "Next.js", "TypeScript", "Tailwind"],
     image: "/abstract-memory-storage-visualization.jpg",
     year: "2025",
     url: "https://www.radiantlifeaesthetics.co.za/",
   },
-  
+  {
+    title: "Womany",
+    client: "Womany",
+    role: "Frontend engineer",
+    summary: "Global women’s health brand presence focused on clear storytelling, accessibility, and trust across devices.",
+    tags: ["Next.js", "React", "TypeScript", "Tailwind"],
+    image: "/placeholder.jpg",
+    year: "2025",
+    url: "https://www.womany.org/",
+  },
+  {
+    title: "Womanon",
+    client: "Womanon",
+    role: "Frontend engineer",
+    summary:
+      "Digital platform for women’s health that communicates complex programmes, technology, and impact in a calm, structured interface.",
+    tags: ["Next.js", "React", "TypeScript", "Tailwind"],
+    image: "/placeholder-user.jpg",
+    year: "2025",
+    url: "https://www.womanon.org/",
+  },
+  {
+    title: "Dr Mishqah Dollie",
+    client: "Dr Mishqah Dollie",
+    role: "Frontend engineer",
+    summary: "Personal brand and practice website with an emphasis on clarity, trust, and a welcoming patient experience.",
+    tags: ["Next.js", "React", "TypeScript", "Tailwind"],
+    image: "/placeholder-logo.png",
+    year: "2025",
+    url: "https://drmishqahdollie.co.za/",
+  },
 ]
 
 export function Works() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
 
   return (
-    <section className="relative py-32 px-8 md:px-12 md:py-24">
+    <section id="works" className="relative py-32 px-8 md:px-12 md:py-24">
       {/* Section Header */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -49,7 +88,7 @@ export function Works() {
 
       {/* Projects List */}
       <div className="relative">
-        {projects.map((project, index) => (
+        {projects.slice(0, 3).map((project, index) => (
           <motion.div
             key={project.title}
             initial={{ opacity: 0, y: 40 }}
@@ -68,7 +107,7 @@ export function Works() {
               className="group flex flex-col md:flex-row md:items-center justify-between gap-4"
             >
               {/* Year */}
-              <span className="font-mono text-xs text-muted-foreground tracking-widest order-1 md:order-none">
+              <span className="font-mono text-[10px] md:text-xs text-muted-foreground tracking-widest order-1 md:order-none">
                 {project.year}
               </span>
 
@@ -114,27 +153,39 @@ export function Works() {
                 )}
               </motion.div>
 
-              {/* Title */}
-              <motion.h3
-                className="font-sans text-4xl md:text-6xl lg:text-7xl font-light tracking-tight group-hover:text-white/70 transition-colors duration-300 flex-1"
-                animate={{
-                  x: hoveredIndex === index ? 20 : 0,
-                }}
-                transition={{ type: "spring", stiffness: 300, damping: 20 }}
-              >
-                {project.title}
-              </motion.h3>
+              {/* Title + summary */}
+              <div className="flex-1 min-w-0">
+                <motion.h3
+                  className="font-sans text-3xl md:text-5xl lg:text-6xl font-light tracking-tight group-hover:text-white/80 transition-colors duration-300"
+                  animate={{
+                    x: hoveredIndex === index ? 20 : 0,
+                  }}
+                  transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                >
+                  {project.title}
+                </motion.h3>
+                <p className="mt-4 text-xs md:text-sm text-muted-foreground/90 max-w-xl leading-relaxed">
+                  {project.summary}
+                </p>
+              </div>
 
-              {/* Tags */}
-              <div className="flex gap-2 flex-wrap order-2 md:order-none">
-                {project.tags.map((tag) => (
-                  <span
-                    key={tag}
-                    className="font-mono text-[10px] tracking-wider px-3 py-1 border border-white/20 rounded-full text-muted-foreground"
-                  >
-                    {tag}
+              {/* Tags / tech */}
+              <div className="flex flex-col items-start md:items-end gap-3 order-2 md:order-none">
+                <div className="flex gap-2 flex-wrap justify-end">
+                  {project.tags.map((tag) => (
+                    <span
+                      key={tag}
+                      className="font-mono text-[10px] tracking-wider px-3 py-1 border border-white/20 rounded-full text-muted-foreground"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+                {project.url && (
+                  <span className="font-mono text-[10px] tracking-[0.2em] text-muted-foreground group-hover:text-white/80 transition-colors duration-300">
+                    VIEW LIVE SITE →
                   </span>
-                ))}
+                )}
               </div>
             </a>
           </motion.div>
