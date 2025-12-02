@@ -186,14 +186,15 @@ export function WorksGrid() {
                 >
                   <motion.div
                     className="relative w-full h-full"
-                    initial={{ scale: 1.1 }}
-                    whileHover={{ scale: 1.05 }}
+                    initial={{ scale: 1.05 }}
+                    whileHover={{ scale: 1.0 }}
                     transition={{ duration: 0.4 }}
                   >
                     <Image
                       src={item.image}
                       alt={item.title}
                       fill
+                      sizes="(min-width: 768px) 20rem, 100vw"
                       className="object-cover"
                       style={{ filter: "grayscale(50%) contrast(1.1)" }}
                     />

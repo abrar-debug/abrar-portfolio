@@ -27,7 +27,7 @@ export function Footer() {
     <footer className="relative">
       {/* Main CTA */}
       <motion.a
-        href="mailto:hello@example.com"
+        href="mailto:hoqueabrar@gmail.com"
         data-cursor-hover
         className="relative block overflow-hidden"
         onMouseEnter={() => setIsHovered(true)}
@@ -78,16 +78,31 @@ export function Footer() {
 
           {/* Links */}
           <div className="flex gap-8">
-            {["LinkedIn", "GitHub", "Twitter"].map((link) => (
-              <a
-                key={link}
-                href="#"
-                data-cursor-hover
-                className="font-mono text-xs tracking-widest text-muted-foreground hover:text-white transition-colors duration-300"
-              >
-                {link}
-              </a>
-            ))}
+            <a
+              href="https://www.linkedin.com/in/mohammed-abrar-hoque-5059b4274"
+              target="_blank"
+              rel="noopener noreferrer"
+              data-cursor-hover
+              className="font-mono text-xs tracking-widest text-muted-foreground hover:text-white transition-colors duration-300"
+            >
+              LinkedIn
+            </a>
+            <a
+              href="https://github.com/abrar-debug"
+              target="_blank"
+              rel="noopener noreferrer"
+              data-cursor-hover
+              className="font-mono text-xs tracking-widest text-muted-foreground hover:text-white transition-colors duration-300"
+            >
+              GitHub
+            </a>
+            <a
+              href="mailto:hoqueabrar@gmail.com"
+              data-cursor-hover
+              className="font-mono text-xs tracking-widest text-muted-foreground hover:text-white transition-colors duration-300"
+            >
+              Email
+            </a>
           </div>
 
           {/* Copyright */}
