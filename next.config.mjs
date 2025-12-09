@@ -1,13 +1,11 @@
 /** @type {import('next').NextConfig} */
-const isProd = process.env.NODE_ENV === 'production';
-
 const nextConfig = {
   output: 'export',
   trailingSlash: true,
-
-  // 👇 IMPORTANT: tell Next where the app is hosted in production
-  basePath: isProd ? '/abrar-portfolio' : '',
-  assetPrefix: isProd ? '/abrar-portfolio/' : '',
+  
+  // No basePath - serving from root of GitHub Pages
+  basePath: '',
+  assetPrefix: '',
 
   typescript: {
     ignoreBuildErrors: true,
