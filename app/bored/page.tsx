@@ -4,6 +4,7 @@ import { CustomCursor } from "@/components/custom-cursor"
 import { SmoothScroll } from "@/components/smooth-scroll"
 import { motion } from "framer-motion"
 import { useEffect, useRef, useState } from "react"
+import { EnemyEasy, EnemyMedium, EnemyHard } from "./enemies"
 
 export default function BoredPage() {
   const containerRef = useRef<HTMLDivElement | null>(null)
@@ -22,6 +23,14 @@ export default function BoredPage() {
   const last = useRef<number | null>(null)
   const lastShot = useRef(0)
 
+  const getEnemySize = (type: 'easy' | 'medium' | 'hard') => {
+    switch(type) {
+      case 'medium': return 60
+      case 'hard': return 90
+      default: return 40
+    }
+  }
+
   useEffect(() => {
     const measure = () => {
       const w =
@@ -39,15 +48,15 @@ export default function BoredPage() {
       setX(startX)
 
       // Enemies
-      const enemyW = 40
       const enemyY = 100
       const speed = 150
       // Check if enemies already exist to avoid resetting them on resize
       if (enemiesRef.current.length === 0) {
+        const easyW = getEnemySize('easy')
         const newEnemies = [
-          { id: 1, x: w * 0.25 - enemyW / 2, y: enemyY, vx: speed, vy: 50, type: 'easy' as const, health: 1 },
-          { id: 2, x: w * 0.5 - enemyW / 2, y: enemyY, vx: -speed, vy: 50, type: 'easy' as const, health: 1 },
-          { id: 3, x: w * 0.75 - enemyW / 2, y: enemyY, vx: speed, vy: 50, type: 'easy' as const, health: 1 },
+          { id: 1, x: w * 0.25 - easyW / 2, y: enemyY, vx: speed, vy: 50, type: 'easy' as const, health: 1 },
+          { id: 2, x: w * 0.5 - easyW / 2, y: enemyY, vx: -speed, vy: 50, type: 'easy' as const, health: 1 },
+          { id: 3, x: w * 0.75 - easyW / 2, y: enemyY, vx: speed, vy: 50, type: 'easy' as const, health: 1 },
         ]
         setEnemies(newEnemies)
         enemiesRef.current = newEnemies
@@ -109,11 +118,10 @@ export default function BoredPage() {
 
       // Move Enemies
       if (enemiesRef.current.length > 0) {
-        const enemyW = 40
-        const enemyH = 40
-        const maxX = boundsRef.current.width - enemyW
-        let changed = false
         const nextEnemies = enemiesRef.current.map((e) => {
+          const enemyW = getEnemySize(e.type)
+          const maxX = boundsRef.current.width - enemyW
+          
           let nx = e.x + e.vx * dt
           let ny = e.y + e.vy * dt
           let nvx = e.vx
@@ -124,8 +132,12 @@ export default function BoredPage() {
             nx = maxX
             nvx = -nvx
           }
-          if (nx !== e.x || ny !== e.y) changed = true
           return { ...e, x: nx, y: ny, vx: nvx }
+        })
+        
+        let changed = nextEnemies.some((e, i) => {
+           const prev = enemiesRef.current[i]
+           return e.x !== prev.x || e.y !== prev.y
         })
 
         // Check for player collision
@@ -135,6 +147,8 @@ export default function BoredPage() {
         const playerH = 24
         
         for (const enemy of nextEnemies) {
+          const enemyW = getEnemySize(enemy.type)
+          const enemyH = enemyW // Square enemies
           if (
             enemy.x < playerX + playerW &&
             enemy.x + enemyW > playerX &&
@@ -158,8 +172,7 @@ export default function BoredPage() {
       // Spawner logic
       if (enemiesRef.current.length < 5 && Math.random() < 0.02) {
          const w = boundsRef.current.width
-         const enemyW = 40
-         const enemyY = -40 // Start slightly above
+         const enemyY = -90 // Start above (max size 90)
          const speed = 150 + Math.random() * 100
          
          const rand = Math.random()
@@ -178,6 +191,8 @@ export default function BoredPage() {
             type = 'medium'
             health = 2
          }
+
+         const enemyW = getEnemySize(type)
 
          const newEnemy = {
            id: Date.now() + Math.random(),
@@ -208,8 +223,6 @@ export default function BoredPage() {
 
       if (bulletsRef.current.length > 0) {
         const bulletSpeed = 800
-        const enemyW = 40
-        const enemyH = 40
         const bulletW = 4
         const bulletH = 12
 
@@ -224,18 +237,14 @@ export default function BoredPage() {
           const destroyedBulletIds = new Set<number>()
 
           for (const enemy of enemiesRef.current) {
+            const enemyW = getEnemySize(enemy.type)
+            const enemyH = enemyW
             let hit = false
             for (const bullet of activeBullets) {
               if (destroyedBulletIds.has(bullet.id)) continue
 
               // Simple AABB collision
               // Bullet y is distance from bottom, enemy y is distance from top
-              // Convert bullet y to top-relative: window.innerHeight - bullet.y
-              // Actually bullet.y in state seems to be distance from bottom?
-              // Let's check render: transform: `translate(${b.x}px, -${b.y}px)` with bottom-0
-              // So b.y is positive up from bottom.
-              // Enemy y is top-relative (translate y).
-
               const bulletTop = window.innerHeight - (bullet.y + bulletH)
               const bulletBottom = window.innerHeight - bullet.y
               const bulletLeft = bullet.x
@@ -294,13 +303,13 @@ export default function BoredPage() {
     // Reset game state
     setGameOver(false)
     const w = boundsRef.current.width
-    const enemyW = 40
     const enemyY = 100
     const speed = 150
+    const easyW = getEnemySize('easy')
     const startEnemies = [
-      { id: 1, x: w * 0.25 - enemyW / 2, y: enemyY, vx: speed, vy: 50, type: 'easy' as const, health: 1 },
-      { id: 2, x: w * 0.5 - enemyW / 2, y: enemyY, vx: -speed, vy: 50, type: 'easy' as const, health: 1 },
-      { id: 3, x: w * 0.75 - enemyW / 2, y: enemyY, vx: speed, vy: 50, type: 'easy' as const, health: 1 },
+      { id: 1, x: w * 0.25 - easyW / 2, y: enemyY, vx: speed, vy: 50, type: 'easy' as const, health: 1 },
+      { id: 2, x: w * 0.5 - easyW / 2, y: enemyY, vx: -speed, vy: 50, type: 'easy' as const, health: 1 },
+      { id: 3, x: w * 0.75 - easyW / 2, y: enemyY, vx: speed, vy: 50, type: 'easy' as const, health: 1 },
     ]
     enemiesRef.current = startEnemies
     setEnemies(startEnemies)
@@ -341,17 +350,24 @@ export default function BoredPage() {
             </button>
           </div>
         )}
-        {enemies.map((e) => (
-          <div
-            key={e.id}
-            className={`absolute top-0 left-0 w-10 h-10 shadow-[0_0_15px_rgba(50,255,50,0.6)] [clip-path:polygon(50%_100%,0%_0%,100%_0%)] ${
-              e.type === 'hard' ? 'bg-red-500 shadow-[0_0_15px_rgba(255,50,50,0.6)]' :
-              e.type === 'medium' ? 'bg-yellow-500 shadow-[0_0_15px_rgba(255,255,50,0.6)]' :
-              'bg-green-500 shadow-[0_0_15px_rgba(50,255,50,0.6)]'
-            }`}
-            style={{ transform: `translate(${e.x}px, ${e.y}px)` }}
-          />
-        ))}
+        {enemies.map((e) => {
+          const size = getEnemySize(e.type)
+          return (
+            <div
+              key={e.id}
+              className="absolute top-0 left-0"
+              style={{ 
+                width: size,
+                height: size,
+                transform: `translate(${e.x}px, ${e.y}px)` 
+              }}
+            >
+              {e.type === 'easy' && <EnemyEasy className="w-full h-full text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.6)]" />}
+              {e.type === 'medium' && <EnemyMedium className="w-full h-full text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.6)]" />}
+              {e.type === 'hard' && <EnemyHard className="w-full h-full text-white drop-shadow-[0_0_8px_rgba(255,255,255,0.6)]" />}
+            </div>
+          )
+        })}
         {bullets.map((b) => (
           <div
             key={b.id}
