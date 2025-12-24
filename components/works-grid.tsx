@@ -16,13 +16,6 @@ const devImages = [
     year: "2025",
     image: alrafahiaImg,
   },
-  {
-    title: "OH! What a Gift",
-    summary: "Oh! What a Gift is a custom embroidery business that produces custom embroidered towels and gifts sets.",
-    tags: ["React", "WooCommerce", "PHP"],
-    year: "2025",
-    image: owagImg,
-  },
 ]
 
 export function WorksGrid() {
