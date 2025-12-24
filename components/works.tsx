@@ -87,26 +87,6 @@ export const projects = [
     year: "2025",
     url: "https://drmishqahdollie.co.za/",
   },
-  {
-    title: "Sam's Hardware",
-    client: "Sam's Hardware",
-    role: "Full‑stack engineer",
-    summary: "South African hardware retailer with a performance‑focused storefront and clear product navigation.",
-    tags: ["React", "Next.js", "WooCommerce", "Tailwind"],
-    image: "/sound-wave-visualization-dark-theme.jpg",
-    year: "2025",
-    url: "https://samshardware.co.za/",
-  },
-  {
-    title: "OH! What a Gift",
-    client: "OH! What a Gift",
-    role: "Frontend engineer",
-    summary: "Custom embroidery and gifts storefront focused on simple flows and mobile‑first shopping.",
-    tags: ["React", "Next.js", "WooCommerce", "Tailwind"],
-    image: "/placeholder.jpg",
-    year: "2025",
-    url: "https://ohwhatagift.co.za/",
-  },
 ]
 
 export function Works() {

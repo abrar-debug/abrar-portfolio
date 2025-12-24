@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { motion } from "framer-motion"
 import Image from "next/image"
+import { Button } from "@/components/ui/button"
 import alrafahiaImg from "@/app/works/devImages/alrafahia.png"
 import owagImg from "@/app/works/devImages/Owag.png"
 import { projects } from "./works"
@@ -20,6 +21,8 @@ const devImages = [
 
 export function WorksGrid() {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
+  const [showAll, setShowAll] = useState(false)
+  const visibleProjects = showAll ? projects : projects.slice(0, 6)
 
   return (
     <section className="relative py-32 px-8 md:px-12 md:py-24">
@@ -42,7 +45,7 @@ export function WorksGrid() {
 
       {/* Grid */}
       <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-        {projects.map((project, index) => (
+        {visibleProjects.map((project, index) => (
           <motion.a
             key={project.title}
             href={project.url || "#"}
@@ -137,6 +140,19 @@ export function WorksGrid() {
           </motion.a>
         ))}
       </div>
+      
+      {!showAll && (
+        <div className="mt-10 flex justify-center">
+          <Button
+            variant="outline"
+            size="lg"
+            onClick={() => setShowAll(true)}
+            data-cursor-hover
+          >
+            Show all
+          </Button>
+        </div>
+      )}
 
       {/* Currently Working On */}
       <div className="mt-24 border-t border-white/10 pt-16">
