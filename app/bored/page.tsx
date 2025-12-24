@@ -13,6 +13,7 @@ export default function BoredPage() {
   const boundsRef = useRef({ width: 0, maxX: 0 })
   const [bullets, setBullets] = useState<{ id: number; x: number; y: number }[]>([])
   const bulletsRef = useRef<{ id: number; x: number; y: number }[]>([])
+  const [enemies, setEnemies] = useState<{ id: number; x: number; y: number }[]>([])
   const keys = useRef({ left: false, right: false, shoot: false })
   const last = useRef<number | null>(null)
   const lastShot = useRef(0)
@@ -32,6 +33,15 @@ export default function BoredPage() {
       const startX = Math.max(0, Math.min(maxX, Math.floor(w / 2 - shipW / 2)))
       xRef.current = startX
       setX(startX)
+
+      // Enemies
+      const enemyW = 40
+      const enemyY = 100
+      setEnemies([
+        { id: 1, x: w * 0.25 - enemyW / 2, y: enemyY },
+        { id: 2, x: w * 0.5 - enemyW / 2, y: enemyY },
+        { id: 3, x: w * 0.75 - enemyW / 2, y: enemyY },
+      ])
     }
     const id = requestAnimationFrame(measure)
     const onResize = () => measure()
@@ -108,6 +118,13 @@ export default function BoredPage() {
       <CustomCursor />
       <Navbar />
       <main ref={containerRef} className="relative h-screen w-screen overflow-hidden bg-[#050505]">
+        {enemies.map((e) => (
+          <div
+            key={e.id}
+            className="absolute top-0 left-0 w-10 h-10 bg-green-500 shadow-[0_0_15px_rgba(50,255,50,0.6)] [clip-path:polygon(50%_100%,0%_0%,100%_0%)]"
+            style={{ transform: `translate(${e.x}px, ${e.y}px)` }}
+          />
+        ))}
         {bullets.map((b) => (
           <div
             key={b.id}
