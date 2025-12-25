@@ -20,6 +20,8 @@ export default function BoredPage() {
   const keys = useRef({ left: false, right: false, shoot: false })
   const [playing, setPlaying] = useState(false)
   const [gameOver, setGameOver] = useState(false)
+  const [score, setScore] = useState(0)
+  const scoreRef = useRef(0)
   const playingRef = useRef(false)
   const last = useRef<number | null>(null)
   const lastShot = useRef(0)
@@ -268,6 +270,16 @@ export default function BoredPage() {
                 // Damage logic
                 enemy.health -= 1
                 if (enemy.health <= 0) {
+                    let points = 0
+                    if (enemy.type === 'easy') points = 1
+                    else if (enemy.type === 'medium') points = 2
+                    else if (enemy.type === 'hard') points = 3
+                    
+                    console.log('Enemy destroyed:', enemy.type, 'Points:', points)
+                    setScore(s => {
+                        console.log('Updating score from', s, 'to', s + points)
+                        return s + points
+                    })
                     break // Destroyed
                 } else {
                     hit = false // Bullet destroyed, enemy survives
@@ -300,9 +312,11 @@ export default function BoredPage() {
     return () => cancelAnimationFrame(id)
   }, [])
 
-  const startGame = () => {
+ const startGame = () => {
     // Reset game state
     setGameOver(false)
+    setScore(0)
+    scoreRef.current = 0
     const w = boundsRef.current.width
     const enemyY = 100
     const speed = 150
@@ -328,11 +342,20 @@ export default function BoredPage() {
       <CustomCursor />
       <Navbar />
       <main ref={containerRef} className="relative h-screen w-screen overflow-hidden bg-[#050505]">
+        <div className="fixed top-24 left-8 z-[60] pointer-events-none mix-blend-difference">
+          <div className="flex flex-col">
+            <span className="text-[10px] uppercase tracking-[0.2em] text-white/50">Score</span>
+            <span className="text-4xl font-bold tracking-tighter text-white tabular-nums">
+              {score.toString().padStart(6, '0')}
+            </span>
+          </div>
+        </div>
+
         {(!playing || gameOver) && (
           <div className="fixed bottom-0 left-0 z-50 flex w-full items-center justify-between border-t border-white/10 bg-black/90 px-8 py-6 backdrop-blur-md">
             <div className="flex items-center gap-8 text-sm text-white/60">
               <h1 className="text-xl font-bold tracking-tighter text-white">
-                {gameOver ? "GAME OVER" : "VOID SHOOTER"}
+                {gameOver ? `GAME OVER - SCORE: ${score}` : "VOID SHOOTER"}
               </h1>
               <div className="h-4 w-px bg-white/10" />
               <p>
