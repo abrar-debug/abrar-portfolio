@@ -4,6 +4,7 @@ import { CustomCursor } from "@/components/custom-cursor"
 import { SmoothScroll } from "@/components/smooth-scroll"
 import { motion } from "framer-motion"
 import { useEffect, useRef, useState } from "react"
+import NextImage from "next/image"
 import { EnemyEasy, EnemyMedium, EnemyHard } from "./enemies"
 import { PlayerShip } from "./player-ship"
 
@@ -21,6 +22,7 @@ export default function BoredPage() {
   const [playing, setPlaying] = useState(false)
   const [gameOver, setGameOver] = useState(false)
   const [score, setScore] = useState(0)
+  const [isHovered, setIsHovered] = useState(false)
   const scoreRef = useRef(0)
   const playingRef = useRef(false)
   const last = useRef<number | null>(null)
@@ -219,7 +221,7 @@ export default function BoredPage() {
       // Bullets
       if (keys.current.shoot && t - lastShot.current > 200) {
         const bulletX = xRef.current + 24 - 2 // center of ship (48px) - half bullet (4px)
-        const bulletY = 32 + 24 // bottom-8 (32px) + h-6 (24px)
+        const bulletY = 32 + 48 // bottom-8 (32px) + h-12 (48px)
         bulletsRef.current.push({ id: t, x: bulletX, y: bulletY })
         lastShot.current = t
       }
@@ -269,6 +271,7 @@ export default function BoredPage() {
                 
                 // Damage logic
                 enemy.health -= 1
+                console.log(`Enemy hit! ID: ${enemy.id}, Type: ${enemy.type}, Health: ${enemy.health}`);
                 if (enemy.health <= 0) {
                     let points = 0
                     if (enemy.type === 'easy') points = 1
@@ -352,27 +355,79 @@ export default function BoredPage() {
         </div>
 
         {(!playing || gameOver) && (
-          <div className="fixed bottom-0 left-0 z-50 flex w-full items-center justify-between border-t border-white/10 bg-black/90 px-8 py-6 backdrop-blur-md">
-            <div className="flex items-center gap-8 text-sm text-white/60">
-              <h1 className="text-xl font-bold tracking-tighter text-white">
-                {gameOver ? `GAME OVER - SCORE: ${score}` : "VOID SHOOTER"}
-              </h1>
-              <div className="h-4 w-px bg-white/10" />
-              <p>
-                <span className="font-bold text-white">A / D</span> to Move
-              </p>
-              <p>
-                <span className="font-bold text-white">SPACE</span> to Shoot
-              </p>
+          <motion.button
+            onClick={startGame}
+            className="fixed bottom-0 left-0 z-50 w-full overflow-hidden border-t border-white/10 bg-[#050505] cursor-pointer"
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+          >
+            <motion.div
+              className="absolute inset-0 bg-[#2563eb]"
+              initial={{ y: "100%" }}
+              animate={{ y: isHovered ? "0%" : "100%" }}
+              transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
+            />
+            
+            <div className="relative flex w-full items-center justify-between px-8 py-6">
+              <div className="flex items-center gap-8 text-sm">
+                {gameOver && (
+                  <>
+                    <motion.h1 
+                      className="text-xl font-bold tracking-tighter"
+                      animate={{ color: isHovered ? "#050505" : "#ffffff" }}
+                    >
+                      GAME OVER - SCORE: {score}
+                    </motion.h1>
+                    <motion.div 
+                      className="h-4 w-px" 
+                      animate={{ backgroundColor: isHovered ? "rgba(5,5,5,0.2)" : "rgba(255,255,255,0.2)" }}
+                    />
+                  </>
+                )}
+                <div className="flex items-center gap-2">
+                  <div className="flex gap-1">
+                    <NextImage 
+                      src="/icons/keyboard-key-a.png" 
+                      alt="A key" 
+                      width={24} 
+                      height={24} 
+                      className={`transition-all duration-300 ${isHovered ? "" : "invert"}`}
+                    />
+                    <motion.span 
+                      className="font-bold self-center"
+                      animate={{ color: isHovered ? "#050505" : "#ffffff" }}
+                    >
+                      /
+                    </motion.span>
+                    <NextImage 
+                      src="/icons/key-d-of-a-keyboard.png" 
+                      alt="D key" 
+                      width={24} 
+                      height={24} 
+                      className={`transition-all duration-300 ${isHovered ? "" : "invert"}`}
+                    />
+                  </div>
+                  <motion.span 
+                    animate={{ color: isHovered ? "#050505" : "#ffffff" }}
+                  >
+                    to Move
+                  </motion.span>
+                </div>
+                <motion.p animate={{ color: isHovered ? "#050505" : "#ffffff" }}>
+                  <span className="font-bold">SPACE</span> to Shoot
+                </motion.p>
+              </div>
+              
+              <div className="relative px-8 py-2 text-xl italic font-bold uppercase tracking-widest transition-colors">
+                <motion.span 
+                  className="relative"
+                  animate={{ color: isHovered ? "#050505" : "#ffffff" }}
+                >
+                  {gameOver ? "RETRY" : "PLAY"}
+                </motion.span>
+              </div>
             </div>
-            <button
-              onClick={startGame}
-              className="group relative px-8 py-2 text-sm font-bold uppercase tracking-widest text-white transition-colors hover:text-black"
-            >
-              <div className="absolute inset-0 border border-white transition-all group-hover:bg-white" />
-              <span className="relative">{gameOver ? "RETRY" : "PLAY"}</span>
-            </button>
-          </div>
+          </motion.button>
         )}
         {enemies.map((e) => {
           const size = getEnemySize(e.type)
