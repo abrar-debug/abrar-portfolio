@@ -79,6 +79,16 @@ const miraGalleryImages = [
   "/sentiosk/mira/Screenshot 2026-04-13 140854.png",
 ]
 
+const hqGalleryImages = [
+  "/sentiosk/hq/Screenshot 2026-04-13 141532.png",
+  "/sentiosk/hq/Screenshot 2026-04-13 141547.png",
+  "/sentiosk/hq/Screenshot 2026-04-13 141634.png",
+  "/sentiosk/hq/Screenshot 2026-04-13 141619.png",
+  "/sentiosk/hq/Screenshot 2026-04-13 141658.png",
+  "/sentiosk/hq/Screenshot 2026-04-13 141601.png",
+  "/sentiosk/hq/Screenshot 2026-04-13 141609.png",
+]
+
 export default function SentioskPage() {
   return (
     <SmoothScroll>
@@ -126,7 +136,7 @@ export default function SentioskPage() {
                 <section key={offering.id} className="border border-white/10 rounded-xl p-6 md:p-8 bg-white/[0.02]">
                   <div
                     className={
-                      offering.id === "nova" || offering.id === "mira"
+                      offering.id === "nova" || offering.id === "mira" || offering.id === "hq"
                         ? "grid gap-6 md:gap-8 lg:grid-cols-2 lg:items-start"
                         : ""
                     }
@@ -179,6 +189,21 @@ export default function SentioskPage() {
                           </ul>
                         </div>
                       )}
+                      {offering.id === "hq" && (
+                        <div className="mt-6 border border-white/10 rounded-xl p-5 md:p-6 bg-white/[0.02] max-w-3xl">
+                          <p className="font-mono text-[10px] md:text-xs tracking-[0.2em] text-muted-foreground uppercase mb-3">
+                            HQ Tech Stack
+                          </p>
+                          <ul className="space-y-2 text-xs md:text-sm text-muted-foreground">
+                            <li>TypeScript</li>
+                            <li>Node.js</li>
+                            <li>Argon2id</li>
+                            <li>AWS</li>
+                            <li>Nginx</li>
+                            <li>Docker</li>
+                          </ul>
+                        </div>
+                      )}
                     </div>
 
                     {offering.id === "nova" && (
@@ -221,6 +246,33 @@ export default function SentioskPage() {
                                   <Image
                                     src={imageSrc}
                                     alt="Sentiosk Mira interface screenshot"
+                                    width={1200}
+                                    height={800}
+                                    className="h-auto w-full transition-transform duration-500 ease-out group-hover:scale-[1.03]"
+                                  />
+                                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/25 to-transparent opacity-35 transition-opacity duration-300 group-hover:opacity-10" />
+                                </div>
+                              </CarouselItem>
+                            ))}
+                          </CarouselContent>
+                          <CarouselPrevious className="left-0 border-white/20 bg-black/60 hover:bg-black/80" />
+                          <CarouselNext className="right-0 border-white/20 bg-black/60 hover:bg-black/80" />
+                        </Carousel>
+                      </div>
+                    )}
+                    {offering.id === "hq" && (
+                      <div className="relative px-10 md:px-12">
+                        <Carousel
+                          opts={{ align: "start", loop: true }}
+                          className="w-full"
+                        >
+                          <CarouselContent className="-ml-0">
+                            {hqGalleryImages.map((imageSrc) => (
+                              <CarouselItem key={imageSrc} className="pl-0">
+                                <div className="group relative overflow-hidden rounded-lg border border-white/10 bg-black/40">
+                                  <Image
+                                    src={imageSrc}
+                                    alt="Sentiosk HQ dashboard screenshot"
                                     width={1200}
                                     height={800}
                                     className="h-auto w-full transition-transform duration-500 ease-out group-hover:scale-[1.03]"
