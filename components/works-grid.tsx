@@ -5,7 +5,6 @@ import { motion } from "framer-motion"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import alrafahiaImg from "@/app/works/devImages/alrafahia.png"
-import owagImg from "@/app/works/devImages/Owag.png"
 import { projects } from "./works"
 
 // Dev-only image set for in‑progress work
@@ -16,6 +15,30 @@ const devImages = [
     tags: ["React", "WooCommerce", "PHP"],
     year: "2025",
     image: alrafahiaImg,
+  },
+  {
+    title: "Soochuh",
+    summary:
+      "Online custom scrubs shop with personalized fits, streamlined product selection, and a checkout flow optimized for mobile shoppers.",
+    tags: ["WooCommerce", "TypeScript", "PHP"],
+    year: "2026",
+    image: "/works/soochuh.png",
+  },
+  {
+    title: "dr Nabs",
+    summary:
+      "Doctor portfolio site designed to showcase credentials, services, and thought leadership through a clean, trustworthy content experience.",
+    tags: ["Sanity", "Vue"],
+    year: "2026",
+    image: "/works/dr-nabs.png",
+  },
+  {
+    title: "Soochuh Medical",
+    summary:
+      "Doctors practice website focused on patient-first information architecture, clear service pages, and easy appointment journey touchpoints.",
+    tags: ["Sanity", "TypeScript"],
+    year: "2026",
+    image: "/works/soochuh-medical.png",
   },
 ]
 
