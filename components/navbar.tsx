@@ -51,17 +51,13 @@ export function Navbar() {
       >
         <nav className="flex items-center justify-between px-6 py-4 my-0 md:px-12 md:py-5">
           {/* Logo */}
-          <a
-            href="#"
-            onClick={(e) => {
-              e.preventDefault()
-              window.scrollTo({ top: 0, behavior: "smooth" })
-            }}
+          <button
+            onClick={() => router.push("/")}
             className="group flex items-center gap-2"
           >
             <span className="font-mono text-xs tracking-widest text-muted-foreground">MEET ABRAR</span>
             <span className="w-1.5 h-1.5 rounded-full bg-accent group-hover:scale-150 transition-transform duration-300" />
-          </a>
+          </button>
 
           {/* Desktop Navigation */}
           <ul className="hidden md:flex items-center gap-8">
